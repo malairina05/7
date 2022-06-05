@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>threeJS</title>
+        <script src="three.js-dev/build/three.js"></script>
+
+    </head>
+    <body>
+        <canvas id="Canvas"></canvas>
+        <script src="three.js-dev/examples/js/geometries/ParametricGeometry.js"></script>
+        <script>
+            var renderer = new THREE.WebGLRenderer({canvas: document.getElementById("Canvas"), antialias: true, alpha: false });
+
+            renderer.setClearColor(0xCBEFFF);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            var camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 0.1, 4000 );
+            var scene = new THREE.Scene();
+            //scene.add( camera );
+
+            var pyramidgeometry=new THREE.CylinderGeometry(0, 0.8, 2, 4);
+            var pyramidmaterial=new THREE.MeshLambertMaterial({color: 0xF3FFE2});
+            var pyramidmesh=new THREE.Mesh(pyramidgeometry, pyramidmaterial);
+            pyramidmesh.position.set(0, 2, -10);
+
+            scene.add(pyramidmesh);
+
+            var lightOne=new THREE.AmbientLight(0xffff, 0.5);
+            scene.add(lightOne);
+            var lightTwo=new THREE.PointLight(0xffff, 0.5);
+            scene.add(lightTwo);
+
+            var phi = 0
+
+            var boxgeometry=new THREE.BoxGeometry(1, 1, 1);
+            var boxmaterial = new THREE.MeshNormalMaterial()
+            var boxmesh=new THREE.Mesh(boxgeometry, boxmaterial);
+            boxmesh.position.set(-0.9, 0, -6);
+            scene.add(boxmesh);
+
+            var spheregeometry=new THREE.SphereGeometry(0.5);
+            var spherematerial=new THREE.MeshBasicMaterial({wireframe: true, color: 0x0000000});
+            var spheremesh=new THREE.Mesh(spheregeometry, spherematerial);
+            spheremesh.position.set(0.9, 0, -6);
+            scene.add(spheremesh);
+
+            var circlegeometry=new THREE.CircleBufferGeometry(0.5);
+            var circlematerial=new THREE.MeshBasicMaterial(
+             {color: 0x0000000});
+            var circlemesh=new THREE.Mesh(circlegeometry, circlematerial);
+            circlemesh.position.set(2, 0, -6);
+            circlemesh.rotation.set(0, 0.5, 0);
+            scene.add(circlemesh);
+
+            var parageometry = new THREE.ParametricGeometry(paraFunction, 8, 8);
+            var paramaterial = new THREE.MeshBasicMaterial({color: 0xff4f00});
+            var paramesh = new THREE.Mesh(parageometry, paramaterial);
+            paramesh.position.set(0, -2, -100);
+            scene.add(paramesh);
+
+            var planegeometry = new THREE.PlaneGeometry(10, 10);
+            var planematerial = new THREE.MeshPhongMaterial({
+                color: 0xF3FFE2,
+                specular: 0xFF0000,
+                shininess: 50
+            });
+            var planemesh = new THREE.Mesh(planegeometry, planematerial);
+            planemesh.position.set(0, -4, -100);
+            scene.add(planemesh);
+            var delta = 0;
+
+
+            var paraFunction=function(a, b)
+            {
+            var x=-5+5*a;
+            var y=-5+5*b;
+            var z=(Math.sin(a*Math.PI)+Math.sin(b*Math.PI))*(-7);
+            return new THREE.Vector3(x, y, z);
+            }
+
+            function render(){
+
+                var x=2 * Math.cos(phi);
+                var x=2 * Math.cos(phi);
+                phi+=0.01;
+                pyramidmesh.rotation.y += 0.1;
+                paramesh.rotation.x += 0.1;
+                paramesh.rotation.y += 0.1;
+
+
+                renderer.render(scene, camera);
+                requestAnimationFrame(render);
+            }
+
+            render();
+        </script>
+          
+    </body>
+</html>
